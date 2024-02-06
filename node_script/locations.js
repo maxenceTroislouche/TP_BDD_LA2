@@ -4,7 +4,7 @@ import axios from 'axios';
 const fetchRandomLocations = async () => {
     try {
         const response = await axios.get('https://randomuser.me/api/');
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch(error) {
         console.error(error);
