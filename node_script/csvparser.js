@@ -7,11 +7,7 @@ function writeArrayToCSV(array, filepath) {
     for (let line of array) {
         lineString = "";
         for (let item of line) {
-            if (typeof item === 'string') {
-                lineString += `"${item}",`;
-            } else {
-                lineString += `${item},`;
-            }
+            lineString += `${item},`;
         }
         if (lineString.length != 0 && lineString[lineString.length - 1] == ",") {
             lineString = lineString.slice(0, -1);
