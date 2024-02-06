@@ -1,1 +1,0 @@
-grant file on *.* to maxence@localhost identified by 'password';
