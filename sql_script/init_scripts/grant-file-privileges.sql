@@ -1,0 +1,2 @@
+GRANT FILE ON *.* TO 'maxence';
+FLUSH PRIVILEGES;

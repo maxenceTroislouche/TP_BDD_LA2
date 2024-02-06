@@ -13,6 +13,7 @@ services:
     volumes:
       - ./init_scripts:/docker-entrypoint-initdb.d/
       - mysql_data:/var/lib/mysql
+      - ../node_script/JSON/:/var/lib/mysql-files/
     restart: unless-stopped
 
 volumes:
