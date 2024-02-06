@@ -7,7 +7,11 @@ function writeArrayToCSV(array, filepath) {
     for (let line of array) {
         lineString = "";
         for (let item of line) {
-            lineString += `${item},`;
+            if (typeof lineString === 'string') {
+                lineString += `"${item}",`;
+            } else {
+                lineString += `${item},`;
+            }
         }
         if (lineString.length != 0 && lineString[lineString.length - 1] == ",") {
             lineString = lineString.slice(0, -1);
@@ -19,7 +23,7 @@ function writeArrayToCSV(array, filepath) {
     writeFile(filepath, csvString, { encoding: 'utf-8' }, err => {
         if (err) {
             console.error(`Erreur lors de l'écriture dans le fichier ${filepath}`);
-            exit(1);
+            process.exit(1);
         } else {
             console.log(`Convertion CSV réussie pour ${filepath}`);
         }

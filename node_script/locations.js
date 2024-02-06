@@ -8,11 +8,11 @@ const fetchRandomLocations = async () => {
         return response.data;
     } catch(error) {
         console.error(error);
-        exit(1);
+        process.exit(1);
     }
 }
 
-const generateLocationsCSV = async (nbLocations) => {
+const generateLocationsCSV = async (nbLocations, filepath) => {
     let locations = [["Num Rue","Nom Rue","Ville","Code Postal"]];
 
     for (let i = 0; i < nbLocations; i++) {
@@ -27,7 +27,7 @@ const generateLocationsCSV = async (nbLocations) => {
         ]);
     }
 
-    writeArrayToCSV(locations, 'CSV/locations.csv');
+    writeArrayToCSV(locations, filepath);
 }
 
 export default generateLocationsCSV;

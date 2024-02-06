@@ -7,11 +7,11 @@ const fetchRandomUser = async () => {
     return response.data;
   } catch(error) {
     console.error(error);
-    exit(1);
+    process.exit(1);
   }
 }
 
-const generateUsersCSV = async (nbUsers) => {
+const generateUsersCSV = async (nbUsers, filepath) => {
   let users = [["Nom", "Prenom", "Date de naissance", "Email", "Mot de passe"]];
 
   for (let i = 0; i < nbUsers; i++) {
@@ -24,7 +24,7 @@ const generateUsersCSV = async (nbUsers) => {
     ]);
   }
 
-  writeArrayToCSV(users, 'CSV/users.csv');
+  writeArrayToCSV(users, filepath);
 }
 
 export default generateUsersCSV;
