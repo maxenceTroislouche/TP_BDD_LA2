@@ -1,8 +1,8 @@
-import writeArrayToCSV from './csvparser.js';
+import generateUsersCSV from './users.js';
 
 console.log("Début du script !");
 
-writeArrayToCSV([
-    [1, "coucou"],
-    [2, "ahdaldzahkdlhaz"]
-], 'test.csv');
+// Generate users csv
+const nbUsers = 100;
+
+generateUsersCSV(nbUsers);

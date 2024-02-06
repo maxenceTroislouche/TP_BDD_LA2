@@ -13,7 +13,6 @@ function writeArrayToCSV(array, filepath) {
                 lineString += `${item},`;
             }
         }
-        console.log("<<" + lineString + ">>");
         if (lineString.length != 0 && lineString[lineString.length - 1] == ",") {
             lineString = lineString.slice(0, -1);
             lineString += ";\n";
@@ -21,7 +20,7 @@ function writeArrayToCSV(array, filepath) {
         csvString += lineString;
     }
 
-    writeFile(filepath, csvString, err => {
+    writeFile(filepath, csvString, { encoding: 'utf-8' }, err => {
         if (err) {
             console.error(`Erreur lors de l'écriture dans le fichier ${filepath}`);
             exit(1);
