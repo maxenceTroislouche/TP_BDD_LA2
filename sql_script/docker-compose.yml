@@ -3,7 +3,6 @@ services:
   db:
     image: mysql:latest
     container_name: cm_immo_db
-    command: --local-infile=1
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: CM_IMMO
@@ -14,7 +13,7 @@ services:
     volumes:
       - ./init_scripts:/docker-entrypoint-initdb.d/
       - mysql_data:/var/lib/mysql
-      - ../node_script/JSON/:/var/lib/mysql-files/
+      - ./CSV:/var/lib/mysql-files
     restart: unless-stopped
 
 volumes:

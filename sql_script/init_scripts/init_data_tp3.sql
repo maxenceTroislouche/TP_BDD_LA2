@@ -42,11 +42,39 @@ BEGIN
     INSERT INTO CM_IMMO.TYPE_CRITERE(id, lib) VALUES (4, "Qualité de l'environnement");
 END $$
 
-CREATE PROCEDURE CreerJeuTest()
+CREATE PROCEDURE InitTempsAuths()
 BEGIN
-    CALL Supprimer_Tables_CM_IMMO();
-    CALL Creer_CM_IMMO_DB();
+    CREATE TABLE TEMP_AUTHS (
+        id INT NOT NULL,
+        nom_utilisateur VARCHAR(500),
+        mot_de_passe VARCHAR(500),
+        PRIMARY KEY (id)
+    );
+END $$
 
+CREATE PROCEDURE FillAndDeleteTempAuths()
+BEGIN
+    DROP TABLE AUTH;
+END $$
+
+CREATE PROCEDURE InitTempTiers()
+BEGIN
+    CREATE TABLE TEMP_TIERS (
+           id INT NOT NULL AUTO_INCREMENT,
+           nom VARCHAR(200) NOT NULL,
+           prenom VARCHAR(200) NOT NULL,
+           date_de_naissance DATE NOT NULL,
+           PRIMARY KEY (id)
+    );
+END $$
+
+CREATE PROCEDURE FillAndDeleteTempTiers()
+BEGIN
+    DROP TABLE TEMP_TIER;
+END $$
+
+CREATE PROCEDURE InitAllDefaultTypesTables()
+BEGIN
     CALL InitTypeTiers();
     CALL InitTypeLocation();
     CALL InitTypeBien();
@@ -54,9 +82,17 @@ BEGIN
     CALL InitChauffage();
     CALL InitEauChaude();
     CALL InitTypeCritere();
-
-    
 END $$
 
-DELIMITER ;
+CREATE PROCEDURE createALlTempTables()
+BEGIN
+    CALL InitTempsAuths();
+    CALL InitTempTiers();
+END $$
 
+CREATE PROCEDURE fillTablesAndDeleteAllTempTable()
+BEGIN
+    CALL FillAndDeleteTempTiers();
+    CALL FillAndDeleteTempAuths();
+END $$
+DELIMITER ;
