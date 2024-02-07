@@ -1,3 +1,4 @@
+import { write } from 'fs';
 import jsonData from './JSON/Question_Reponses_Soft.json' with { type: "json" };
 import writeArrayToCSV from './csvparser.js';
 
@@ -5,7 +6,7 @@ const generateQuestionsAnswersCSV = (nbQuestions, questionsCSVFilepath, answersC
     let jsonDataCopy = [...jsonData];
 
     let questionsCSVData = [["id", "texte", "datePublication"]];
-    let reponsesCSVData = [["idQuestion", "texte", "datePublication"]];
+    let answersCSVData = [["idQuestion", "texte", "datePublication"]];
 
     // Checks if we have enough questions ...
     if (nbQuestions > jsonDataCopy.length) {
@@ -13,15 +14,30 @@ const generateQuestionsAnswersCSV = (nbQuestions, questionsCSVFilepath, answersC
     }
 
     let randomIndex = 0;
+    let questionId = 0;
 
-    // TODO: Ajouter qui a posé la question ?
     while (questionsCSVData.length < nbQuestions + 1) {
+        questionId++;
         randomIndex = Math.random() * jsonDataCopy.length;
 
-        let data = jsonDataCopy.splice(randomIndex, 1);
-
+        let questionData = jsonDataCopy.splice(randomIndex, 1)[0];
         
+        questionsCSVData.push([
+            questionId,
+            questionData.question,
+            questionData.date
+        ]);
+
+        for (let answer of questionData.reponses) {
+            answersCSVData.push([
+                questionId,
+                answer,
+                questionData.date
+            ]);
+        }
     }
+    writeArrayToCSV(questionsCSVData, questionsCSVFilepath);
+    writeArrayToCSV(answersCSVData, answersCSVFilepath);
 }
 
-export default generateQuestionsAnswersCSV
+export default generateQuestionsAnswersCSV;

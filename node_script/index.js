@@ -32,11 +32,11 @@ if (process.argv.length === 3 && process.argv[2] === 'clean') {
 
 // Generate users csv
 console.log("Génération des users ...");
-generateUsersCSV(nbUsers, usersCSVFilepath);
+// generateUsersCSV(nbUsers, usersCSVFilepath);
 
 // Generate Locations csv
 console.log("Génération des adresses ...");
-generateLocationsCSV(nbLocations, locationsCSVFilepath);
+// generateLocationsCSV(nbLocations, locationsCSVFilepath);
 
 // Generate Auth csv
 console.log("Génération des auth ...");
@@ -44,4 +44,4 @@ generateAuthCSV(nbUsers, authCSVFilepath);
 
 // Generate Questions/Answers CSV files
 console.log("Génération des questions/réponses ...");
-// generateQuestionsAnswersCSV(nbQuestions, questionsCSVFilepath, answersCSVFilepath);
+generateQuestionsAnswersCSV(nbQuestions, questionsCSVFilepath, answersCSVFilepath);
