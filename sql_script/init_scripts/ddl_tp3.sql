@@ -148,7 +148,7 @@ BEGIN
     ALTER TABLE HONORAIRE ADD FOREIGN KEY (id_tiers) REFERENCES TIERS(id_tiers);
 
     CREATE TABLE AUTH (
-        id_tiers INT NOT NULL,
+        id_tiers INT AUTO_INCREMENT,
         nom_utilisateur VARCHAR(500),
         mot_de_passe VARCHAR(500),
 

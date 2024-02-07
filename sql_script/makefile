@@ -17,5 +17,7 @@ db-build:
 db-clean-volumes:
 	docker-compose -f $(DC_COMP_DEV) down -v
 
+db-reset: db-clean-volumes db-up
+
 db-psql:
 	docker-compose -f $(DC_COMP_DEV) exec postgres psql -U medley medley

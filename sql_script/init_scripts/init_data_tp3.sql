@@ -5,6 +5,7 @@ BEGIN
     INSERT INTO CM_IMMO.TYPE_TIERS(id_type_tiers, libelle) VALUES(2, 'PROPRIETAIRE');
     INSERT INTO CM_IMMO.TYPE_TIERS(id_type_tiers, libelle) VALUES(3, 'LOCATAIRE');
     INSERT INTO CM_IMMO.TYPE_TIERS(id_type_tiers, libelle) VALUES(4, 'AGENT');
+    INSERT INTO CM_IMMO.TYPE_TIERS(id_type_tiers, libelle) VALUES(5, 'CLIENT');
 END $$
 
 CREATE PROCEDURE InitTypeLocation()
@@ -52,25 +53,6 @@ BEGIN
     );
 END $$
 
-
-DELIMITER $$
-CREATE PROCEDURE FillAndDeleteTempAuths(IN nbAuthToCreate INT)
-BEGIN
-    DECLARE i INT DEFAULT 0;
-    DECLARE randomNomUtilisateur VARCHAR(200);
-    DECLARE randomMotDePasse VARCHAR(200);
-
-    WHILE i < nbAuthToCreate DO
-        SELECT nom_utilisateur, mot_de_passe INTO randomNomUtilisateur, randomMotDePasse FROM TEMP_AUTHS
-        ORDER BY RAND()
-        LIMIT 1;
-
-        INSERT INTO AUTH (nom_utilisateur, mot_de_passe) VALUES (randomNomUtilisateur, randomMotDePasse);
-
-        SET i = i + 1;
-    END WHILE;
-END $$
-
 CREATE PROCEDURE InitTempTiers()
 BEGIN
     CREATE TABLE TEMP_TIERS (
@@ -82,10 +64,65 @@ BEGIN
     );
 END $$
 
-CREATE PROCEDURE FillAndDeleteTempTiers()
+CREATE PROCEDURE FillTiers(IN nbAuthToCreate INT, IN libelleTiersType VARCHAR(200))
 BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE randomNom VARCHAR(200);
+    DECLARE randomPrenom VARCHAR(200);
+    DECLARE randomDateNaissance DATE;
+    DECLARE tiersType INT;
 
+    SELECT id_type_tiers INTO tiersType FROM TYPE_TIERS WHERE libelle = libelleTiersType;
+
+    WHILE i < nbAuthToCreate DO
+        SELECT nom, prenom, date_de_naissance INTO randomNom, randomPrenom, randomDateNaissance FROM TEMP_TIERS
+        ORDER BY RAND()
+        LIMIT 1;
+
+        INSERT INTO TIERS (type_tiers, nom, prenom, date_de_naissance) VALUES (tiersType, randomNom, randomPrenom, randomDateNaissance);
+
+        SET i = i + 1;
+    END WHILE;
+
+END $$
+
+CREATE PROCEDURE DeleteTempTiers()
+BEGIN
     DROP TABLE TEMP_TIERS;
+END $$
+
+CREATE PROCEDURE FillAuths()
+BEGIN
+     DECLARE fin INT DEFAULT FALSE;
+    DECLARE currentIdTiers INT;
+    DECLARE randomNomUtilisateur VARCHAR(200);
+    DECLARE randomMotDePasse VARCHAR(200);
+
+    DECLARE cursTiers CURSOR FOR SELECT id_tiers FROM TIERS;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = TRUE;
+
+    OPEN cursTiers;
+
+    boucleTiers: LOOP
+        FETCH cursTiers INTO currentIdTiers;
+        IF fin THEN
+            LEAVE boucleTiers;
+        END IF;
+
+        SELECT nom_utilisateur, mot_de_passe INTO randomNomUtilisateur, randomMotDePasse FROM TEMP_AUTHS
+        ORDER BY RAND()
+        LIMIT 1;
+
+        INSERT INTO AUTH (id_tiers, nom_utilisateur, mot_de_passe) VALUES (currentIdTiers, randomNomUtilisateur, randomMotDePasse);
+    END LOOP;
+
+    CLOSE cursTiers;
+END $$
+
+CREATE PROCEDURE DeleteTempAuths()
+BEGIN
+    DROP TABLE TEMP_AUTHS;
 END $$
 
 CREATE PROCEDURE InitAllDefaultTypesTables()
@@ -105,9 +142,17 @@ BEGIN
     CALL InitTempTiers();
 END $$
 
-CREATE PROCEDURE fillTablesAndDeleteAllTempTable()
+CREATE PROCEDURE fillAllTablesFromTempTables()
 BEGIN
-    CALL FillAndDeleteTempTiers();
-    CALL FillAndDeleteTempAuths();
+    CALL FillTiers(350, 'CLIENT');
+    CALL FillTiers(30, 'PROPRIETAIRE');
+    CALL FillAuths();
 END $$
+
+CREATE PROCEDURE deleteAllTempTables()
+BEGIN
+    CALL DeleteTempAuths();
+    CALL DeleteTempTiers();
+END $$
+
 DELIMITER ;
