@@ -12,7 +12,7 @@ const fetchRandomUser = async () => {
 }
 
 const generateUsersCSV = async (nbUsers, filepath) => {
-  let users = [["Nom", "Prenom", "Date de naissance", "Email", "Mot de passe"]];
+  let users = [["Nom", "Prenom", "Date de naissance"]];
 
   for (let i = 0; i < nbUsers; i++) {
     const userData = await fetchRandomUser();
