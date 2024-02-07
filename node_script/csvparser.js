@@ -8,8 +8,8 @@ function writeArrayToCSV(array, filepath) {
         lineString = "";
         for (let item of line) {
             if (typeof item === 'string') {
-                item = item.replace(',', '",');
                 item = item.replace('"', '""');
+                item = item.replace(',', '",');
             }
             lineString += `${item},`;
         }
