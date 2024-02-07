@@ -45,22 +45,36 @@ END $$
 CREATE PROCEDURE InitTempsAuths()
 BEGIN
     CREATE TABLE TEMP_AUTHS (
-        id INT NOT NULL,
+        id INT AUTO_INCREMENT,
         nom_utilisateur VARCHAR(500),
         mot_de_passe VARCHAR(500),
         PRIMARY KEY (id)
     );
 END $$
 
-CREATE PROCEDURE FillAndDeleteTempAuths()
+
+DELIMITER $$
+CREATE PROCEDURE FillAndDeleteTempAuths(IN nbAuthToCreate INT)
 BEGIN
-    DROP TABLE AUTH;
+    DECLARE i INT DEFAULT 0;
+    DECLARE randomNomUtilisateur VARCHAR(200);
+    DECLARE randomMotDePasse VARCHAR(200);
+
+    WHILE i < nbAuthToCreate DO
+        SELECT nom_utilisateur, mot_de_passe INTO randomNomUtilisateur, randomMotDePasse FROM TEMP_AUTHS
+        ORDER BY RAND()
+        LIMIT 1;
+
+        INSERT INTO AUTH (nom_utilisateur, mot_de_passe) VALUES (randomNomUtilisateur, randomMotDePasse);
+
+        SET i = i + 1;
+    END WHILE;
 END $$
 
 CREATE PROCEDURE InitTempTiers()
 BEGIN
     CREATE TABLE TEMP_TIERS (
-           id INT NOT NULL AUTO_INCREMENT,
+           id INT AUTO_INCREMENT,
            nom VARCHAR(200) NOT NULL,
            prenom VARCHAR(200) NOT NULL,
            date_de_naissance DATE NOT NULL,
@@ -70,7 +84,8 @@ END $$
 
 CREATE PROCEDURE FillAndDeleteTempTiers()
 BEGIN
-    DROP TABLE TEMP_TIER;
+
+    DROP TABLE TEMP_TIERS;
 END $$
 
 CREATE PROCEDURE InitAllDefaultTypesTables()

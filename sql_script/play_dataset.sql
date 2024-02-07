@@ -15,7 +15,10 @@ CALL InitAllDefaultTypesTables();
 CALL createALlTempTables();
 
 #Fill all tables and delete all temp tables
-LOAD DATA INFILE '/var/lib/mysql-files/auth.csv' INTO TABLE TEMP_AUTHS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY ';\n' IGNORE 1 ROWS (nom_utilisateur, mot_de_passe);
-
-LOAD DATA INFILE '/var/lib/mysql-files/users.csv' INTO TABLE TEMP_TIERS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY ';\n' IGNORE 1 ROWS (nom, prenom, date_de_naissance);
+LOAD DATA INFILE '/var/lib/mysql-files/users_passwords_modified.csv' INTO TABLE TEMP_AUTHS FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (nom_utilisateur, mot_de_passe);
+LOAD DATA INFILE '/var/lib/mysql-files/auth.csv' INTO TABLE TEMP_AUTHS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS (nom_utilisateur, mot_de_passe);
+LOAD DATA INFILE '/var/lib/mysql-files/users.csv' INTO TABLE TEMP_TIERS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS (nom, prenom, date_de_naissance);
 CALL fillTablesAndDeleteAllTempTable();
+
+DROP TABLE TEMP_AUTHS;
+DROP TABLE TEMP_TIERS;
