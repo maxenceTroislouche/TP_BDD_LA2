@@ -1,4 +1,3 @@
-import { exit } from 'node:process';
 import { writeFile } from 'fs';
 
 function writeArrayToCSV(array, filepath) {
