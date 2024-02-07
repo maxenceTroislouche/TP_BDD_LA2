@@ -11,6 +11,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
+      - ./play_dataset.sql:/docker-entrypoint-initdb.d/play_dataset.sql
       - ./init_scripts:/docker-entrypoint-initdb.d/
       - mysql_data:/var/lib/mysql
       - ../node_script/CSV:/var/lib/mysql-files

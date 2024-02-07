@@ -349,6 +349,9 @@ BEGIN
     CALL InitTempsAuths();
     CALL InitTempTiers();
     CALL InitTempBiens();
+    CALL InitTempComments();
+    CALL InitTempReponses();
+    CALL InitTempQuestions();
 END $$
 
 CREATE PROCEDURE fillAllTablesFromTempTables()
@@ -358,6 +361,9 @@ BEGIN
     CALL FillAuths();
     CALL FillBiens(50, 'LOCATION_COURTE');
     CALL FillBiens(10, 'LOCATION_LONGUE');
+    CALL FillCommentsWithRandomLCD();
+    CALL FillQuestions();
+    CALL FillReponses();
 END $$
 
 CREATE PROCEDURE deleteAllTempTables()
@@ -365,6 +371,9 @@ BEGIN
     CALL DeleteTempAuths();
     CALL DeleteTempTiers();
     CALL DeleteTempBiens();
+    CALL DeleteTempComments();
+    CALL DeleteTempReponses();
+    CALL DeleteTempQuestions();
 END $$
 
 DELIMITER ;
