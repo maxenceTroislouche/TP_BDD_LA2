@@ -1,4 +1,4 @@
-import jsonData from './JSON/Question_Réponses_Soft.json' with { type: "json" };
+import jsonData from './JSON/Question_Reponses_Soft.json' with { type: "json" };
 import writeArrayToCSV from './csvparser.js';
 
 const generateQuestionsAnswersCSV = (nbQuestions, questionsCSVFilepath, answersCSVFilepath) => {

@@ -31,13 +31,17 @@ if (process.argv.length === 3 && process.argv[2] === 'clean') {
 }
 
 // Generate users csv
+console.log("Génération des users ...");
 generateUsersCSV(nbUsers, usersCSVFilepath);
 
 // Generate Locations csv
+console.log("Génération des adresses ...");
 generateLocationsCSV(nbLocations, locationsCSVFilepath);
 
 // Generate Auth csv
+console.log("Génération des auth ...");
 generateAuthCSV(nbUsers, authCSVFilepath);
 
 // Generate Questions/Answers CSV files
-generateQuestionsAnswersCSV(nbQuestions, questionsCSVFilepath, answersCSVFilepath);
+console.log("Génération des questions/réponses ...");
+// generateQuestionsAnswersCSV(nbQuestions, questionsCSVFilepath, answersCSVFilepath);
