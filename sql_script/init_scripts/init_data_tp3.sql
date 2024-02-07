@@ -110,13 +110,15 @@ BEGIN
     END WHILE;
 
 END $$
-CREATE PROCEDURE GenerateLCDReservations()
+
+CCREATE PROCEDURE GenerateLCDReservations()
 BEGIN
     DECLARE currentBien INT;
     DECLARE lastDateFin DATE;
     DECLARE nbReservations, i, randomLocataire, randomMontant INT;
     DECLARE dateDebut, dateFin DATE;
-    
+    DECLARE finished INT DEFAULT FALSE;
+
     DECLARE bienCursor CURSOR FOR SELECT id_bien FROM BIEN;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
     
@@ -128,26 +130,27 @@ BEGIN
             LEAVE bien_loop;
         END IF;
         
-        SET lastDateFin = '2022-12-31'; -- Date de départ pour les réservations passées
-        SET nbReservations = FLOOR(5 + (RAND() * 5)); -- Générer entre 5 et 10 réservations par bien
+        SET lastDateFin = '2022-12-31'; -- Starting date for past reservations
+        SET nbReservations = FLOOR(5 + (RAND() * 5)); -- Generate between 5 and 10 reservations per property
         
-        bien_reservations: FOR i IN 1..nbReservations DO
-            -- Sélection aléatoire d'un locataire
+        SET i = 0;
+        WHILE i < nbReservations DO
+            -- Random selection of a tenant
             SELECT id_tiers INTO randomLocataire FROM TIERS WHERE id_type_tiers = 3 ORDER BY RAND() LIMIT 1;
             
-            -- Définir les dates de début et fin de réservation sans chevauchement
+            -- Define the start and end dates for the reservation without overlap
             SET dateDebut = DATE_ADD(lastDateFin, INTERVAL FLOOR(1 + (RAND() * 30)) DAY);
-            SET dateFin = DATE_ADD(dateDebut, INTERVAL FLOOR(15 + (RAND() * 30)) DAY); -- Durée entre 15 et 45 jours
+            SET dateFin = DATE_ADD(dateDebut, INTERVAL FLOOR(15 + (RAND() * 30)) DAY); -- Duration between 15 and 45 days
             
-            -- Montant aléatoire
+            -- Random amount
             SET randomMontant = FLOOR(300 + (RAND() * 1200));
             
-            -- Insertion de la réservation
+            -- Inserting the reservation
             INSERT INTO LCD (code_bien, id_locataire, date_debut, date_fin, montant) VALUES (currentBien, randomLocataire, dateDebut, dateFin, randomMontant);
             
             SET lastDateFin = dateFin;
-        END FOR;
-        
+            SET i = i + 1;
+        END WHILE;
     END LOOP;
     
     CLOSE bienCursor;
