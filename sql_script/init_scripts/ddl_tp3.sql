@@ -54,7 +54,7 @@ BEGIN
         num_rue INT NOT NULL,
         nom_rue VARCHAR(200) NOT NULL,
         ville VARCHAR(200) NOT NULL,
-        code_postal INT NOT NULL,
+        code_postal VARCHAR(200) NOT NULL,
         etage INT,
         num_appartement INT,
         date_creation DATE NOT NULL,
