@@ -108,6 +108,48 @@ BEGIN
     END WHILE;
 
 END $$
+CREATE PROCEDURE GenerateLCDReservations()
+BEGIN
+    DECLARE currentBien INT;
+    DECLARE lastDateFin DATE;
+    DECLARE nbReservations, i, randomLocataire, randomMontant INT;
+    DECLARE dateDebut, dateFin DATE;
+    
+    DECLARE bienCursor CURSOR FOR SELECT id_bien FROM BIEN;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
+    
+    OPEN bienCursor;
+    
+    bien_loop: LOOP
+        FETCH bienCursor INTO currentBien;
+        IF finished THEN
+            LEAVE bien_loop;
+        END IF;
+        
+        SET lastDateFin = '2022-12-31'; -- Date de départ pour les réservations passées
+        SET nbReservations = FLOOR(5 + (RAND() * 5)); -- Générer entre 5 et 10 réservations par bien
+        
+        bien_reservations: FOR i IN 1..nbReservations DO
+            -- Sélection aléatoire d'un locataire
+            SELECT id_tiers INTO randomLocataire FROM TIERS WHERE id_type_tiers = 3 ORDER BY RAND() LIMIT 1;
+            
+            -- Définir les dates de début et fin de réservation sans chevauchement
+            SET dateDebut = DATE_ADD(lastDateFin, INTERVAL FLOOR(1 + (RAND() * 30)) DAY);
+            SET dateFin = DATE_ADD(dateDebut, INTERVAL FLOOR(15 + (RAND() * 30)) DAY); -- Durée entre 15 et 45 jours
+            
+            -- Montant aléatoire
+            SET randomMontant = FLOOR(300 + (RAND() * 1200));
+            
+            -- Insertion de la réservation
+            INSERT INTO LCD (code_bien, id_locataire, date_debut, date_fin, montant) VALUES (currentBien, randomLocataire, dateDebut, dateFin, randomMontant);
+            
+            SET lastDateFin = dateFin;
+        END FOR;
+        
+    END LOOP;
+    
+    CLOSE bienCursor;
+END $$
 
 CREATE PROCEDURE FillCommentsWithRandomLCD()
 BEGIN
@@ -141,6 +183,7 @@ BEGIN
 
     CLOSE commentCursor;
 END $$
+
 
 CREATE PROCEDURE FillQuestions()
 BEGIN
