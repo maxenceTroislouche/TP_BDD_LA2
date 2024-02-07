@@ -1,3 +1,4 @@
+import { writeFile } from "node:fs";
 import writeArrayToCSV from "./csvparser.js";
 import axios from 'axios';
 
@@ -30,4 +31,29 @@ const generateLocationsCSV = async (nbLocations, filepath) => {
     writeArrayToCSV(locations, filepath);
 }
 
-export default generateLocationsCSV;
+const generateLocationsJSON = async(nbLocations, filepath) => {
+    let locations = [];
+
+    for (let i = 0; i < nbLocations; i++) {
+        const locationData = await fetchRandomLocations();
+        const location = locationData.results[0];
+
+        locations.push({
+            num_rue: location.location.street.number,
+            nom_rue: location.location.street.name,
+            ville: location.location.city,
+            code_postal: location.location.postcode
+        });
+    }
+
+    writeFile(filepath, JSON.stringify(locations), { encoding: 'utf-8' }, err => {
+        if (err) {
+            console.error(`Erreur lors de l'écriture dans le fichier ${filepath}`);
+            process.exit(1);
+        } else {
+            console.log(`Convertion JSON réussie pour ${filepath}`);
+        }
+    });
+}
+
+export { generateLocationsJSON, generateLocationsCSV };

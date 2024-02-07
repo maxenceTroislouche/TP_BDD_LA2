@@ -1,5 +1,5 @@
 import generateUsersCSV from './users.js';
-import generateLocationsCSV from './locations.js';
+import { generateLocationsJSON, generateLocationsCSV } from './locations.js';
 import generateAuthCSV from './auth.js';
 import generateQuestionsAnswersCSV from './questions.js';
 import generateCommentsCSV from './comments.js';
@@ -12,8 +12,9 @@ console.log("Début du script !");
 const nbUsers = 20;
 const usersCSVFilepath = 'CSV/users.csv';
 
-const nbLocations = 20;
+const nbLocations = 10;
 const locationsCSVFilepath = 'CSV/locations.csv';
+const locationsJSONFilepath = 'JSON/locations.json';
 
 const authCSVFilepath = 'CSV/auth.csv';
 
@@ -29,6 +30,7 @@ const commentsCSVFilepath = 'CSV/comments.csv';
 if (process.argv.length === 3 && process.argv[2] === 'clean') {
     unlink(usersCSVFilepath, (err) => {throw err;});
     unlink(locationsCSVFilepath, (err) => {throw err;});
+    unlink(locationsJSONFilepath, (err) => {throw err;});
     unlink(authCSVFilepath, (err) => {throw err;});
     unlink(questionsCSVFilepath, (err) => {throw err;});
     unlink(answersCSVFilepath, (err) => {throw err;});
@@ -43,7 +45,8 @@ console.log("Génération des users ...");
 
 // Generate Locations csv
 console.log("Génération des adresses ...");
-// generateLocationsCSV(nbLocations, locationsCSVFilepath);
+generateLocationsCSV(nbLocations, locationsCSVFilepath);
+generateLocationsJSON(nbLocations, locationsJSONFilepath);
 
 // Generate Auth csv
 console.log("Génération des auth ...");
