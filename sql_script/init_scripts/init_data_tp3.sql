@@ -1,5 +1,4 @@
 DELIMITER $$
-DECLARE finished INT DEFAULT FALSE;
 
 CREATE PROCEDURE InitTypeTiers()
 BEGIN
@@ -111,7 +110,7 @@ BEGIN
 
 END $$
 
-CCREATE PROCEDURE GenerateLCDReservations()
+CREATE PROCEDURE GenerateLCDReservations()
 BEGIN
     DECLARE currentBien INT;
     DECLARE lastDateFin DATE;
