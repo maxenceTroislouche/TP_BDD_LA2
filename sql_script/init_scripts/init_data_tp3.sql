@@ -54,6 +54,39 @@ BEGIN
     );
 END $$
 
+CREATE PROCEDURE InitTempQuestions()
+BEGIN
+    CREATE TEMPORARY TABLE TEMP_QUESTIONS (
+        id INT AUTO_INCREMENT,
+        texte VARCHAR(500),
+        date_publication DATE,
+        PRIMARY KEY (id)
+    );
+END $$
+
+CREATE PROCEDURE InitTempReponses()
+BEGIN
+    CREATE TEMPORARY TABLE TEMP_REPONSES (
+        id INT AUTO_INCREMENT,
+        id_question INT,
+        texte VARCHAR(500),
+        date_publication DATE,
+        PRIMARY KEY (id)
+    );
+END $$
+
+CREATE PROCEDURE InitTempComments()
+BEGIN
+    CREATE TEMPORARY TABLE TEMP_COMMENTS (
+        id INT AUTO_INCREMENT,
+        id_tiers INT,
+        id_lcd INT,
+        texte VARCHAR(500),
+        id_commentaire_original INT,
+        PRIMARY KEY (id)
+    );
+END $$
+
 CREATE PROCEDURE FillTiers(IN nbAuthToCreate INT, IN libelleTiersType VARCHAR(200))
 BEGIN
     DECLARE i INT DEFAULT 0;
@@ -75,6 +108,73 @@ BEGIN
     END WHILE;
 
 END $$
+
+CREATE PROCEDURE FillCommentsWithRandomLCD()
+BEGIN
+    DECLARE finished INT DEFAULT FALSE;
+    DECLARE curIdTiers INT;
+    DECLARE curTexte VARCHAR(500);
+    DECLARE curIdCommentaireOriginal INT;
+    DECLARE randomIdLCD INT;
+
+    DECLARE commentCursor CURSOR FOR 
+        SELECT id_tiers, texte, id_commentaire_original FROM TEMP_COMMENTS;
+        
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
+
+    OPEN commentCursor;
+
+    fetch_loop: LOOP
+        FETCH commentCursor INTO curIdTiers, curTexte, curIdCommentaireOriginal;
+        IF finished THEN
+            LEAVE fetch_loop;
+        END IF;
+
+        -- Sélection aléatoire d'un id_lcd de la table LCD
+        SELECT id INTO randomIdLCD FROM LCD ORDER BY RAND() LIMIT 1;
+
+        -- Insertion du commentaire dans la table COMMENTAIRES
+        INSERT INTO COMMENTAIRES (id_tiers, id_lcd, texte, id_commentaire_original)
+        VALUES (curIdTiers, randomIdLCD, curTexte, curIdCommentaireOriginal);
+
+    END LOOP;
+
+    CLOSE commentCursor;
+END $$
+
+CREATE PROCEDURE FillQuestions()
+BEGIN
+    INSERT INTO QUESTIONS (texte, date_publication, id_bien, id_tiers)
+    SELECT t.texte, t.date_publication,
+           (SELECT id_bien FROM BIEN ORDER BY RAND() LIMIT 1),
+           (SELECT id_tiers FROM TIERS ORDER BY RAND() LIMIT 1)
+    FROM TEMP_QUESTIONS t;
+END $$
+
+CREATE PROCEDURE FillReponses()
+BEGIN
+    INSERT INTO REPONSES (id_question, texte, date_publication, id_tiers)
+    SELECT t.id_question, t.texte, t.date_publication,
+           (SELECT id_tiers FROM TIERS ORDER BY RAND() LIMIT 1)
+    FROM TEMP_REPONSES t;
+END $$
+
+
+CREATE PROCEDURE DeleteTempQuestions()
+BEGIN
+    DROP TABLE TEMP_QUESTIONS;
+END $$
+
+CREATE PROCEDURE DeleteTempReponses()
+BEGIN
+    DROP TABLE TEMP_REPONSES;
+END $$
+
+CREATE PROCEDURE DeleteTempComments()
+BEGIN
+    DROP TABLE TEMP_COMMENTS;
+END $$
+
 
 CREATE PROCEDURE DeleteTempTiers()
 BEGIN
@@ -109,6 +209,7 @@ BEGIN
 
     CLOSE cursTiers;
 END $$
+
 
 CREATE PROCEDURE DeleteTempAuths()
 BEGIN
