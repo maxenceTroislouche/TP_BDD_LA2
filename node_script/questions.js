@@ -1,4 +1,3 @@
-import { write } from 'fs';
 import jsonData from './JSON/Question_Reponses_Soft.json' with { type: "json" };
 import writeArrayToCSV from './csvparser.js';
 
