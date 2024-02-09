@@ -1,4 +1,4 @@
-import jsonData from './JSON/commentaires_JSON_1000.json' with { type: "json" };
+import jsonData from './JSON/comments.json' with { type: "json" };
 import writeArrayToCSV from './csvparser.js';
 
 const getCSVData = (csvData, data, type) => {
