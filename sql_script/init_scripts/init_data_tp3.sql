@@ -199,6 +199,8 @@ END $$
 
 CREATE PROCEDURE FillQuestions()
 BEGIN
+
+
     INSERT INTO QUESTIONS (texte, date_publication, id_bien, id_tiers)
     SELECT t.texte, t.date_publication,
            (SELECT id_bien FROM BIEN ORDER BY RAND() LIMIT 1),
@@ -419,6 +421,77 @@ BEGIN
     DELETE FROM PROPRIETE;
 END $$
 
+CREATE PROCEDURE FillRetourClients()
+BEGIN
+    DECLARE fin INT DEFAULT FALSE;
+    DECLARE currentLCD INT;
+    DECLARE currentClient INT;
+    DECLARE currentComment INT;
+
+    DECLARE cursLCD CURSOR FOR SELECT id, id_locataire FROM LCD WHERE date_fin < CURRENT_DATE();
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = TRUE;
+
+    OPEN cursLCD;
+
+    boucleLCD: LOOP
+        FETCH cursLCD INTO currentLCD, currentClient;
+        IF fin THEN
+            LEAVE boucleLCD;
+        END IF;
+
+        SELECT id INTO currentComment FROM COMMENTAIRES WHERE id NOT IN (SELECT id_commentaire FROM RETOUR_CLIENT) ORDER BY RAND() LIMIT 1;
+
+        IF currentComment IS NOT NULL THEN
+            INSERT INTO RETOUR_CLIENT (id_commentaire, id_lcd, id_tiers) VALUES (currentComment, currentLCD, currentClient);
+
+        END IF;
+
+    END LOOP;
+
+    CLOSE cursLCD;
+END $$
+
+CREATE PROCEDURE DeleteRetourClients()
+BEGIN
+    DELETE FROM RETOUR_CLIENT;
+END $$
+
+CREATE PROCEDURE FillNoteParCritere()
+BEGIN
+    DECLARE fin INT DEFAULT FALSE;
+    DECLARE currentRetourClient INT;
+    DECLARE currentCritere INT;
+    DECLARE nbCritere INT;
+
+    DECLARE cursRetourClient CURSOR FOR SELECT id FROM RETOUR_CLIENT;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = TRUE;
+
+    OPEN cursRetourClient;
+
+    SELECT COUNT(*) INTO nbCritere FROM TYPE_CRITERE;
+
+    bloucleRetourClient: LOOP
+        FETCH cursRetourClient INTO currentRetourClient;
+        IF fin THEN
+            LEAVE bloucleRetourClient;
+        END IF;
+
+        SET currentCritere = 1;
+        WHILE currentCritere <= nbCritere DO
+            INSERT INTO NOTE_PAR_CRITERE (id_retour, id_type_critere, note) VALUES (currentRetourClient, currentCritere, FLOOR(RAND() * 5) + 1);
+            SET currentCritere = currentCritere + 1;
+        END WHILE;
+    END LOOP;
+
+END $$
+
+CREATE PROCEDURE DeleteNoteParCritere()
+BEGIN
+    DELETE FROM NOTE_PAR_CRITERE;
+END $$
+
 
 CREATE PROCEDURE InitAllDefaultTypesTables()
 BEGIN
@@ -452,6 +525,8 @@ BEGIN
     CALL FillProprietes('PROPRIETAIRE');
     CALL GenerateLCDReservations('CLIENT');
     CALL FillCommentsWithRandomLCD();
+#     CALL FillRetourClients();
+#     CALL FillNoteParCritere();
     CALL FillQuestions();
     CALL FillReponses();
 END $$
