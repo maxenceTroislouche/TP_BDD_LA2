@@ -1,4 +1,4 @@
-import jsonData from './JSON/users_passwords_JSON_1000.json' with { type: "json" };
+import jsonData from './JSON/auth.json' with { type: "json" };
 import writeArrayToCSV from './csvparser.js';
 
 
