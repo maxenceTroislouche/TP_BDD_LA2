@@ -202,15 +202,20 @@ BEGIN
     INSERT INTO QUESTIONS (texte, date_publication, id_bien, id_tiers)
     SELECT t.texte, t.date_publication,
            (SELECT id_bien FROM BIEN ORDER BY RAND() LIMIT 1),
-           (SELECT id_tiers FROM TIERS ORDER BY RAND() LIMIT 1)
+           (SELECT id_tiers FROM TIERS JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers WHERE TYPE_TIERS.libelle = 'LOCATAIRE' ORDER BY RAND() LIMIT 1)
     FROM TEMP_QUESTIONS t;
 END $$
+
 
 CREATE PROCEDURE FillReponses()
 BEGIN
     INSERT INTO REPONSES (id_question, texte, date_publication, id_tiers)
     SELECT t.id_question, t.texte, t.date_publication,
-           (SELECT id_tiers FROM TIERS ORDER BY RAND() LIMIT 1)
+           CASE WHEN RAND() < 0.5 THEN 
+               (SELECT id_tiers FROM TIERS JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers WHERE TYPE_TIERS.libelle = 'LOCATAIRE' ORDER BY RAND() LIMIT 1)
+           ELSE
+               (SELECT id_tiers FROM TIERS JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers WHERE TYPE_TIERS.libelle = 'PROPRIETAIRE' ORDER BY RAND() LIMIT 1)
+           END
     FROM TEMP_REPONSES t;
 END $$
 
