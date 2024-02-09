@@ -202,7 +202,7 @@ BEGIN
     ALTER TABLE COMMENTAIRES ADD FOREIGN KEY (id_commentaire_original) REFERENCES COMMENTAIRES(id);
 
     CREATE TABLE RETOUR_CLIENT (
-        id INT NOT NULL,
+        id INT AUTO_INCREMENT NOT NULL,
         id_tiers INT NOT NULL,
         id_lcd INT NOT NULL UNIQUE,
         id_commentaire INT,
@@ -215,14 +215,14 @@ BEGIN
     ALTER TABLE RETOUR_CLIENT ADD FOREIGN KEY (id_commentaire) REFERENCES COMMENTAIRES(id);
 
     CREATE TABLE TYPE_CRITERE (
-        id INT NOT NULL,
+        id INT AUTO_INCREMENT NOT NULL,
         lib VARCHAR(200) NOT NULL,
 
         PRIMARY KEY (id)
     );
 
     CREATE TABLE NOTE_PAR_CRITERE (
-        id_type_critere INT NOT NULL,
+        id_type_critere INT AUTO_INCREMENT NOT NULL,
         id_retour INT NOT NULL,
         note INT NOT NULL,
 
@@ -233,7 +233,7 @@ BEGIN
     ALTER TABLE NOTE_PAR_CRITERE ADD FOREIGN KEY (id_retour) REFERENCES RETOUR_CLIENT(id);
 
     CREATE TABLE PHOTO_COMMENTAIRE (
-        id_photo INT NOT NULL,
+        id_photo INT AUTO_INCREMENT NOT NULL,
         id_commentaire INT NOT NULL,
 
         PRIMARY KEY (id_photo, id_commentaire)
