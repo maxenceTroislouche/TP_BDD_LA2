@@ -207,7 +207,7 @@ BEGIN
         (SELECT id_tiers
          FROM TIERS
          JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers
-         WHERE TYPE_TIERS.libelle IN ('LOCATAIRE')
+         WHERE TYPE_TIERS.libelle IN ('CLIENT')
          ORDER BY RAND() LIMIT 1)
     FROM TEMP_QUESTIONS t;
 END $$
@@ -511,7 +511,7 @@ BEGIN
     CALL InitTypeCritere();
 END $$
 
-CREATE PROCEDURE createALlTempTables()
+CREATE PROCEDURE createAllTempTables()
 BEGIN
     CALL InitTempsAuths();
     CALL InitTempTiers();
