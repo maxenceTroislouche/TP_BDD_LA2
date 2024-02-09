@@ -24,3 +24,4 @@ LOAD DATA INFILE '/var/lib/mysql-files/comments.csv' INTO TABLE TEMP_COMMENTS FI
 CALL fillAllTablesFromTempTables();
 
 CALL deleteAllTempTables();
+

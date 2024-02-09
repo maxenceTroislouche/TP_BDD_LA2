@@ -57,7 +57,7 @@ END $$
 
 CREATE PROCEDURE InitTempQuestions()
 BEGIN
-    CREATE TEMPORARY TABLE TEMP_QUESTIONS (
+    CREATE TABLE TEMP_QUESTIONS (
         id INT AUTO_INCREMENT,
         texte VARCHAR(500),
         date_publication DATE,
@@ -67,7 +67,7 @@ END $$
 
 CREATE PROCEDURE InitTempReponses()
 BEGIN
-    CREATE TEMPORARY TABLE TEMP_REPONSES (
+    CREATE TABLE TEMP_REPONSES (
         id INT AUTO_INCREMENT,
         id_question INT,
         texte VARCHAR(500),
@@ -78,10 +78,8 @@ END $$
 
 CREATE PROCEDURE InitTempComments()
 BEGIN
-    CREATE TEMPORARY TABLE TEMP_COMMENTS (
+    CREATE TABLE TEMP_COMMENTS (
         id INT AUTO_INCREMENT,
-        id_tiers INT,
-        id_lcd INT,
         texte VARCHAR(500),
         id_commentaire_original INT,
         PRIMARY KEY (id)
@@ -110,18 +108,21 @@ BEGIN
 
 END $$
 
-CREATE PROCEDURE GenerateLCDReservations()
+CREATE PROCEDURE GenerateLCDReservations(IN typeTiers VARCHAR(200))
 BEGIN
     DECLARE currentBien INT;
     DECLARE lastDateFin DATE;
     DECLARE nbReservations, i, randomLocataire, randomMontant INT;
     DECLARE dateDebut, dateFin DATE;
+    DECLARE idTypeTiers INT;
     DECLARE finished INT DEFAULT FALSE;
 
     DECLARE bienCursor CURSOR FOR SELECT id_bien FROM BIEN;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
     
     OPEN bienCursor;
+
+    SELECT id_type_tiers INTO idTypeTiers FROM TYPE_TIERS WHERE libelle = typeTiers;
     
     bien_loop: LOOP
         FETCH bienCursor INTO currentBien;
@@ -129,22 +130,18 @@ BEGIN
             LEAVE bien_loop;
         END IF;
         
-        SET lastDateFin = '2022-12-31'; -- Starting date for past reservations
-        SET nbReservations = FLOOR(5 + (RAND() * 5)); -- Generate between 5 and 10 reservations per property
+        SET lastDateFin = '2022-12-31';
+        SET nbReservations = FLOOR(5 + (RAND() * 5));
         
         SET i = 0;
         WHILE i < nbReservations DO
-            -- Random selection of a tenant
-            SELECT id_tiers INTO randomLocataire FROM TIERS WHERE id_type_tiers = 3 ORDER BY RAND() LIMIT 1;
-            
-            -- Define the start and end dates for the reservation without overlap
+            SELECT id_tiers INTO randomLocataire FROM TIERS WHERE type_tiers = idTypeTiers ORDER BY RAND() LIMIT 1;
+
             SET dateDebut = DATE_ADD(lastDateFin, INTERVAL FLOOR(1 + (RAND() * 30)) DAY);
-            SET dateFin = DATE_ADD(dateDebut, INTERVAL FLOOR(15 + (RAND() * 30)) DAY); -- Duration between 15 and 45 days
-            
-            -- Random amount
+            SET dateFin = DATE_ADD(dateDebut, INTERVAL FLOOR(15 + (RAND() * 30)) DAY);
+
             SET randomMontant = FLOOR(300 + (RAND() * 1200));
-            
-            -- Inserting the reservation
+
             INSERT INTO LCD (code_bien, id_locataire, date_debut, date_fin, montant) VALUES (currentBien, randomLocataire, dateDebut, dateFin, randomMontant);
             
             SET lastDateFin = dateFin;
@@ -159,30 +156,41 @@ CREATE PROCEDURE FillCommentsWithRandomLCD()
 BEGIN
     DECLARE finished INT DEFAULT FALSE;
     DECLARE curIdTiers INT;
+    DECLARE codeBien INT;
     DECLARE curTexte VARCHAR(500);
     DECLARE curIdCommentaireOriginal INT;
     DECLARE randomIdLCD INT;
+    DECLARE idTypeAgent INT;
 
     DECLARE commentCursor CURSOR FOR 
-        SELECT id_tiers, texte, id_commentaire_original FROM TEMP_COMMENTS;
+        SELECT texte, id_commentaire_original FROM TEMP_COMMENTS;
         
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
 
     OPEN commentCursor;
 
+    SELECT id_type_tiers INTO idTypeAgent FROM TYPE_TIERS WHERE libelle = 'AGENT';
+
     fetch_loop: LOOP
-        FETCH commentCursor INTO curIdTiers, curTexte, curIdCommentaireOriginal;
+        FETCH commentCursor INTO curTexte, curIdCommentaireOriginal;
         IF finished THEN
             LEAVE fetch_loop;
         END IF;
 
-        -- Sélection aléatoire d'un id_lcd de la table LCD
-        SELECT id INTO randomIdLCD FROM LCD ORDER BY RAND() LIMIT 1;
+        SELECT id, id_locataire, code_bien INTO randomIdLCD, curIdTiers, codeBien FROM LCD ORDER BY RAND() LIMIT 1;
 
-        -- Insertion du commentaire dans la table COMMENTAIRES
+        IF curIdCommentaireOriginal != 0 THEN
+            IF curIdCommentaireOriginal % 2 = 0 THEN
+                SELECT id_tiers INTO curIdTiers FROM TIERS WHERE type_tiers = idTypeAgent ORDER BY RAND() LIMIT 1;
+            ELSE
+                SELECT id_tiers INTO curIdTiers FROM PROPRIETE WHERE id_bien = codeBien ORDER BY RAND() LIMIT 1;
+            END IF;
+        ELSE
+            SET curIdCommentaireOriginal = NULL;
+        END IF;
+
         INSERT INTO COMMENTAIRES (id_tiers, id_lcd, texte, id_commentaire_original)
         VALUES (curIdTiers, randomIdLCD, curTexte, curIdCommentaireOriginal);
-
     END LOOP;
 
     CLOSE commentCursor;
@@ -333,6 +341,80 @@ BEGIN
     DROP TABLE TEMP_LOCATIONS;
 END $$
 
+CREATE PROCEDURE FillProprietes(IN libelleTiersType VARCHAR(200))
+BEGIN
+    DECLARE fin INT DEFAULT FALSE;
+    DECLARE currentIdTiers INT;
+    DECLARE currentIdBien INT;
+    DECLARE compteurBiens INT DEFAULT 0;
+    DECLARE nombreDeTiers INT;
+    DECLARE nombreDeBiens INT;
+    DECLARE idProprietaire INT;
+    DECLARE biensNonAttribues INT;
+
+    DECLARE cursTiers CURSOR FOR SELECT id_tiers FROM TIERS
+        INNER JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers
+        WHERE TYPE_TIERS.libelle = libelleTiersType;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = TRUE;
+
+    OPEN cursTiers;
+
+    SELECT COUNT(*) INTO nombreDeTiers
+    FROM TIERS
+    INNER JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers
+    WHERE TYPE_TIERS.libelle = libelleTiersType;
+
+    SELECT COUNT(*) INTO nombreDeBiens FROM BIEN;
+
+    boucleTiers: LOOP
+        FETCH cursTiers INTO currentIdTiers;
+        IF fin THEN
+            LEAVE boucleTiers;
+        END IF;
+
+        SELECT id_bien INTO currentIdBien FROM BIEN
+        WHERE id_bien NOT IN (SELECT id_bien FROM PROPRIETE)
+        ORDER BY id_bien
+        LIMIT 1;
+
+        IF currentIdBien IS NOT NULL THEN
+            INSERT INTO PROPRIETE (id_tiers, id_bien, part) VALUES (currentIdTiers, currentIdBien, 1);
+            SET compteurBiens = compteurBiens + 1;
+            SET currentIdBien = NULL;
+        ELSE
+            LEAVE boucleTiers;
+        END IF;
+    END LOOP;
+
+    SET biensNonAttribues = compteurBiens + 1;
+    WHILE biensNonAttribues <= nombreDeBiens DO
+        SELECT id_bien INTO currentIdBien FROM BIEN
+        WHERE id_bien NOT IN (SELECT id_bien FROM PROPRIETE)
+        ORDER BY id_bien
+        LIMIT 1;
+
+        IF currentIdBien IS NOT NULL THEN
+            SELECT id_tiers INTO idProprietaire FROM TIERS
+            INNER JOIN TYPE_TIERS ON TIERS.type_tiers = TYPE_TIERS.id_type_tiers
+            WHERE TYPE_TIERS.libelle = libelleTiersType
+            ORDER BY RAND()
+            LIMIT 1;
+
+            INSERT INTO PROPRIETE (id_tiers, id_bien, part) VALUES (idProprietaire, currentIdBien, 1);
+        END IF;
+        SET biensNonAttribues = biensNonAttribues + 1;
+    END WHILE;
+
+    CLOSE cursTiers;
+END $$
+
+CREATE PROCEDURE DeleteProprietes()
+BEGIN
+    DELETE FROM PROPRIETE;
+END $$
+
+
 CREATE PROCEDURE InitAllDefaultTypesTables()
 BEGIN
     CALL InitTypeTiers();
@@ -358,9 +440,12 @@ CREATE PROCEDURE fillAllTablesFromTempTables()
 BEGIN
     CALL FillTiers(350, 'CLIENT');
     CALL FillTiers(30, 'PROPRIETAIRE');
+    CALL FillTiers(30, 'AGENT');
     CALL FillAuths();
     CALL FillBiens(50, 'LOCATION_COURTE');
     CALL FillBiens(10, 'LOCATION_LONGUE');
+    CALL FillProprietes('PROPRIETAIRE');
+    CALL GenerateLCDReservations('CLIENT');
     CALL FillCommentsWithRandomLCD();
     CALL FillQuestions();
     CALL FillReponses();
@@ -368,12 +453,13 @@ END $$
 
 CREATE PROCEDURE deleteAllTempTables()
 BEGIN
-    CALL DeleteTempAuths();
-    CALL DeleteTempTiers();
-    CALL DeleteTempBiens();
     CALL DeleteTempComments();
     CALL DeleteTempReponses();
     CALL DeleteTempQuestions();
+    CALL DeleteProprietes();
+    CALL DeleteTempAuths();
+    CALL DeleteTempTiers();
+    CALL DeleteTempBiens();
 END $$
 
 DELIMITER ;

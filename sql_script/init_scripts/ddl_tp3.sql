@@ -188,7 +188,7 @@ BEGIN
 
 
     CREATE TABLE COMMENTAIRES (
-        id INT NOT NULL,
+        id INT NOT NULL AUTO_INCREMENT,
         id_tiers INT NOT NULL,
         id_lcd INT NOT NULL,
         texte VARCHAR(500),
