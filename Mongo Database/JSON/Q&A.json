@@ -1,0 +1,269 @@
+[
+    {
+        "question": "Quels types de logements proposez-vous pour les locations courtes durées ?",
+        "reponses": [
+            "Nous proposons des studios, appartements une chambre et des maisons entières, selon vos besoins.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2024-01-19"
+    },
+    {
+        "question": "Y a-t-il des frais supplémentaires pour les services comme le wifi ou le parking ?",
+        "reponses": [
+            "Le wifi est inclus dans le prix, mais le parking peut entraîner des frais supplémentaires selon l'emplacement."
+        ],
+        "date": "2023-12-22"
+    },
+    {
+        "question": "Comment puis-je vérifier les disponibilités et réserver un logement ?",
+        "reponses": [
+            "Vous pouvez vérifier les disponibilités et réserver directement sur notre site web ou via nos partenaires de réservation."
+        ],
+        "date": "2023-04-23"
+    },
+    {
+        "date": "2023-07-31",
+        "question": "Peut-on amener des animaux de compagnie dans les locations ?",
+        "reponses": [
+            "Les animaux de compagnie sont autorisés dans certains de nos logements, avec des conditions spécifiques."
+        ]
+    },
+    {
+        "question": "Quelles sont les options de logement disponibles pour des séjours de longue durée ?",
+        "reponses": [
+            "Pour les longs séjours, nous offrons des appartements de plusieurs chambres et des maisons spacieuses adaptées à vos besoins prolongés."
+        ],
+        "date": "2024-02-01"
+    },
+    {
+        "question": "Le nettoyage est-il effectué régulièrement dans les logements loués ?",
+        "reponses": [
+            "Oui, un service de nettoyage est disponible sur demande avec des frais supplémentaires.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2023-02-10"
+    },
+    {
+        "question": "Comment fonctionnent les remboursements en cas d'annulation anticipée d'un long séjour ?",
+        "reponses": [
+            "Pour les longs séjours annulés, nous appliquons une politique de remboursement proportionnelle à la durée déjà passée dans le logement."
+        ],
+        "date": "2023-12-12"
+    },
+    {
+        "question": "Y a-t-il des offres spéciales pour les réservations de dernière minute ?",
+        "reponses": [
+            "Oui, nous proposons parfois des réductions pour les réservations de dernière minute, en fonction de la disponibilité.",
+            "Nous sommes dédiés à fournir un service de qualité.",
+            "Pour plus d'informations, contactez notre service client."
+        ],
+        "date": "2023-11-01"
+    },
+    {
+        "question": "Est-ce que les logements disposent d'installations pour bébés et enfants en bas âge ?",
+        "reponses": [
+            "Certains de nos logements sont équipés pour accueillir les familles avec de jeunes enfants, incluant des lits bébés et des chaises hautes."
+        ],
+        "date": "2023-01-04"
+    },
+    {
+        "question": "Quels sont les horaires de check-in et check-out pour les logements ?",
+        "reponses": [
+            "Le check-in standard est à 15h et le check-out à 11h, mais des arrangements flexibles peuvent être possibles.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2024-02-01"
+    },
+    {
+        "question": "Est-il possible d'avoir un guide local ou des recommandations sur les activités à proximité ?",
+        "reponses": [
+            "Oui, nous fournissons des guides locaux et des recommandations personnalisées pour des activités et des restaurants dans la région."
+        ],
+        "date": "2024-02-01"
+    },
+    {
+        "question": "Y a-t-il une assurance en cas de dommages dans le logement pendant le séjour ?",
+        "reponses": [
+            "Une assurance dommage est incluse dans la location, couvrant les accidents mineurs.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2024-02-01"
+    },
+    {
+        "question": "Est-ce que des services de conciergerie sont disponibles dans vos logements ?",
+        "reponses": [
+            "Certains de nos logements haut de gamme offrent des services de conciergerie pour répondre à vos besoins spécifiques."
+        ],
+        "date": "2024-02-01"
+    },
+    {
+        "question": "Quels types de logements proposez-vous pour les locations courtes durées ?",
+        "reponses": [
+            "Nous proposons des studios, appartements une chambre et des maisons entières, selon vos besoins."
+        ],
+        "date": "2024-01-19"
+    },
+    {
+        "question": "Y a-t-il des frais supplémentaires pour les services comme le wifi ou le parking ?",
+        "reponses": [
+            "Le wifi est inclus dans le prix, mais le parking peut entraîner des frais supplémentaires selon l'emplacement."
+        ],
+        "date": "2023-12-22"
+    },
+    {
+        "question": "Comment puis-je vérifier les disponibilités et réserver un logement ?",
+        "reponses": [
+            "Vous pouvez vérifier les disponibilités et réserver directement sur notre site web ou via nos partenaires de réservation.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2023-04-23"
+    },
+    {
+        "date": "2023-07-31",
+        "question": "Peut-on amener des animaux de compagnie dans les locations ?",
+        "reponses": [
+            "Les animaux de compagnie sont autorisés dans certains de nos logements, avec des conditions spécifiques."
+        ]
+    },
+    {
+        "question": "Quelle est la politique d'annulation pour une location courte durée ?",
+        "reponses": [
+            "Les annulations sont possibles jusqu'à 24 heures avant l'arrivée sans frais supplémentaires.",
+            "En cas d'annulation moins de 24 heures avant l'arrivée, une nuitée peut être facturée.",
+            "Pour des séjours plus longs, une politique d'annulation plus stricte peut s'appliquer."
+        ],
+        "date": "2023-08-15"
+    },
+    {
+        "question": "Est-il possible de louer un logement pour une seule nuit ?",
+        "reponses": [
+            "Oui, nous offrons la possibilité de réservations à la nuitée."
+        ],
+        "date": "2023-09-05"
+    },
+    {
+        "question": "Comment puis-je obtenir une facture pour mon séjour ?",
+        "reponses": [
+            "Une facture peut être générée et envoyée par e-mail après votre départ."
+        ],
+        "date": "2023-11-12"
+    },
+    {
+        "question": "Y a-t-il des restrictions d'âge pour louer un logement ?",
+        "reponses": [
+            "Les locataires doivent avoir au moins 18 ans pour réserver un logement.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2023-05-20"
+    },
+    {
+        "question": "Comment puis-je signaler un problème ou une urgence durant mon séjour ?",
+        "reponses": [
+            "Nous disposons d'une ligne d'assistance disponible 24h/24 pour tout problème ou urgence.",
+            "Vous pouvez également nous contacter via l'application mobile pour une assistance rapide."
+        ],
+        "date": "2023-06-10"
+    },
+    {
+        "question": "Les logements sont-ils équipés pour accueillir des personnes à mobilité réduite ?",
+        "reponses": [
+            "Certains de nos logements sont spécialement aménagés pour les personnes à mobilité réduite.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2023-03-28"
+    },
+    {
+        "question": "Peut-on prolonger un séjour déjà en cours ?",
+        "reponses": [
+            "Les prolongations de séjour sont possibles selon la disponibilité.",
+            "Nous sommes dédiés à fournir un service de qualité.",
+            "Pour plus d'informations, contactez notre service client."
+        ],
+        "date": "2023-07-22"
+    },
+    {
+        "question": "Les logements sont-ils non-fumeurs ou puis-je fumer à l'intérieur ?",
+        "reponses": [
+            "Tous nos logements sont non-fumeurs pour garantir la qualité de l'air pour tous les locataires.",
+            "Chaque logement est équipé selon des standards de qualité élevés.",
+            "Nous assurons un service client disponible 24/7 pour nos locations."
+        ],
+        "date": "2023-10-30"
+    },
+    {
+        "question": "Y a-t-il des frais de nettoyage supplémentaires ?",
+        "reponses": [
+            "Les frais de nettoyage sont inclus dans le prix de la location.",
+            "Nous sommes dédiés à fournir un service de qualité.",
+            "Pour plus d'informations, contactez notre service client."
+        ],
+        "date": "2023-02-14"
+    },
+    {
+        "question": "Les animaux de compagnie sont-ils autorisés dans les logements ?",
+        "reponses": [
+            "Les animaux de compagnie sont autorisés dans certains logements avec un supplément.",
+            "Veuillez vérifier les règles spécifiques de chaque logement concernant les animaux."
+        ],
+        "date": "2023-01-31"
+    },
+    {
+        "question": "Quels sont les équipements standard dans les logements ?",
+        "reponses": [
+            "Nos logements sont équipés de WiFi, cuisine complète, linge de maison et produits de base.",
+            "La plupart des logements disposent également de télévision et de climatisation.",
+            "Chaque logement est équipé selon des standards de qualité élevés."
+        ],
+        "date": "2023-05-03"
+    },
+    {
+        "question": "Est-il possible de visiter le logement avant de réserver ?",
+        "reponses": [
+            "Nous offrons une visite virtuelle des logements sur notre site web.",
+            "Les visites physiques sont possibles sur demande pour les séjours de longue durée.",
+            "Chaque logement est équipé selon des standards de qualité élevés."
+        ],
+        "date": "2023-08-20"
+    },
+    {
+        "question": "Quels sont les modes de paiement acceptés ?",
+        "reponses": [
+            "Nous acceptons les paiements par carte de crédit, PayPal et virements bancaires.",
+            "Nous sommes dédiés à fournir un service de qualité.",
+            "Pour plus d'informations, contactez notre service client."
+        ],
+        "date": "2023-09-15"
+    },
+    {
+        "question": "Comment sont gérées les clés ou l'accès aux logements ?",
+        "reponses": [
+            "Nous utilisons un système de verrouillage électronique pour un accès sécurisé et pratique.",
+            "Des instructions détaillées sont fournies avant votre arrivée.",
+            "Chaque logement est équipé selon des standards de qualité élevés."
+        ],
+        "date": "2023-04-10"
+    },
+    {
+        "question": "Existe-t-il des réductions pour les longs séjours ?",
+        "reponses": [
+            "Des tarifs réduits sont disponibles pour les séjours de plus d'une semaine.",
+            "Les réductions varient en fonction de la durée et de la période de l'année.",
+            "Nous sommes dédiés à fournir un service de qualité."
+        ],
+        "date": "2023-06-27"
+    },
+    {
+        "question": "Comment puis-je modifier ma réservation après confirmation ?",
+        "reponses": [
+            "Les modifications de réservation peuvent être effectuées via notre site web ou en contactant notre service client."
+        ],
+        "date": "2024-06-02"
+    }
+]
